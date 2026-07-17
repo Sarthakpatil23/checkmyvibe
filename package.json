@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "checkmyvibe",
+  "version": "1.0.0",
+  "description": "A structured security-audit workflow Agent Skill for AI coding assistants to catch common vibe-coded vulnerabilities.",
+  "main": "install.js",
+  "bin": {
+    "checkmyvibe": "./install.js"
+  },
+  "files": [
+    "SKILL.md",
+    "scripts/",
+    "references/",
+    "install.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "ai-agent",
+    "security-audit",
+    "claude-code",
+    "cursor",
+    "vibe-coding",
+    "agent-skill"
+  ],
+  "author": "Sarthak",
+  "license": "Apache-2.0"
+}
