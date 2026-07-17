@@ -1,11 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "checkmyvibe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A structured security-audit workflow Agent Skill for AI coding assistants to catch common vibe-coded vulnerabilities.",
   "main": "install.js",
   "bin": {
-    "checkmyvibe": "./install.js"
+    "checkmyvibe": "install.js"
   },
   "files": [
     "SKILL.md",
@@ -27,5 +27,13 @@
     "agent-skill"
   ],
   "author": "Sarthak",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sarthakpatil23/checkmyvibe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Sarthakpatil23/checkmyvibe/issues"
+  },
+  "homepage": "https://github.com/Sarthakpatil23/checkmyvibe#readme"
 }
