@@ -52,9 +52,9 @@ function performInstall(destPath) {
     console.log('\n=========================================');
     console.log('🎉 checkmyvibe Agent Skill installed!');
     console.log('=========================================');
-    console.log('\nHow to run a security audit:');
+    console.log('\nHow to run checkmyvibe:');
     console.log('1. Open your terminal in the target repository.');
-    console.log('2. Ask your coding agent: "run a security audit"');
+    console.log('2. Ask your coding agent: "run checkmyvibe" or "perform a readiness check"');
     console.log('3. The agent will execute checkmyvibe\'s checks and output a prioritized report!');
     console.log('=========================================\n');
   } catch (err) {

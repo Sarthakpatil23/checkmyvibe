@@ -1,6 +1,6 @@
-# Vibe Vulnerability Patterns
+# Vibe Readiness Risk Patterns
 
-This document serves as a reference for common vulnerability patterns identified in AI-generated ("vibe-coded") applications. AI coding assistants frequently introduce these security flaws because they prioritize speed, feature completion, and standalone component demonstration over robust security configurations.
+This document serves as a reference for common readiness risk patterns identified in AI-generated ("vibe-coded") applications. AI coding assistants frequently introduce these configuration and design flaws because they prioritize speed, feature completion, and standalone component demonstration over robust production-ready setups.
 
 ---
 

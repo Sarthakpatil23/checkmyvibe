@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "checkmyvibe",
-  "version": "1.0.1",
-  "description": "A structured security-audit workflow Agent Skill for AI coding assistants to catch common vibe-coded vulnerabilities.",
+  "version": "1.0.2",
+  "description": "A structured production readiness and code quality workflow Agent Skill for AI coding assistants to catch common vibe-coded configuration issues.",
   "main": "install.js",
   "bin": {
     "checkmyvibe": "install.js"
@@ -20,7 +20,8 @@
   },
   "keywords": [
     "ai-agent",
-    "security-audit",
+    "code-quality",
+    "production-readiness",
     "claude-code",
     "cursor",
     "vibe-coding",

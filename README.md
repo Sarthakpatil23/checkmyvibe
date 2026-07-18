@@ -1,8 +1,8 @@
 # checkmyvibe
 
-A structured, zero-dependency, local security-audit workflow packaged as an Agent Skill for AI coding assistants (such as Claude Code, Cursor, Codex, and Gemini CLI).
+A structured, zero-dependency, local production readiness and code quality workflow packaged as an Agent Skill for AI coding assistants (such as Claude Code, Cursor, Codex, and Gemini CLI).
 
-AI-generated ("vibe-coded") applications built on modern AI tools frequently ship with serious, well-documented security flaws—such as exposed API keys, fake authentication stubs, permissive default database rules, and client-side pricing logic. **checkmyvibe** solves this by packaging security checks directly into an Agent Skill. When you ask your coding agent to "run a security audit," the agent uses checkmyvibe's local helper scripts and its own reasoning capabilities to analyze your codebase, producing a prioritized report detailing what's wrong, why it matters, and how to fix it.
+AI-generated ("vibe-coded") applications built on modern AI tools frequently ship with serious, well-documented configuration and quality issues—such as exposed API keys, fake authentication stubs, permissive default database rules, and client-side pricing logic. **checkmyvibe** solves this by packaging readiness and verification checks directly into an Agent Skill. When you ask your coding agent to "run checkmyvibe" or "perform a readiness check", the agent uses checkmyvibe's local helper scripts and its own reasoning capabilities to analyze your codebase, producing a prioritized report detailing what configuration issues or gaps exist, why they matter, and how to fix them.
 
 ---
 
@@ -20,8 +20,8 @@ AI-generated ("vibe-coded") applications built on modern AI tools frequently shi
 ## What This Does NOT Check For (Disclaimer)
 
 > [!WARNING]
-> **checkmyvibe is not a substitute for a full professional security audit.**
-> This tool is a first-pass heuristic scanner meant to highlight common mistakes made by AI coding models during rapid scaffolding. It does not perform dynamic runtime analysis, penetration testing, deep static analysis, dependency vulnerability checks, or comprehensive logic auditing. Do not rely solely on checkmyvibe to declare your application secure for production.
+> **checkmyvibe is not a substitute for a full professional external security audit.**
+> This tool is a first-pass quality and readiness checklist meant to highlight common mistakes and temporary scaffolding shortcuts made by AI coding models during rapid prototyping. It does not perform dynamic runtime analysis, penetration testing, deep static analysis, dependency vulnerability checks, or comprehensive logic auditing. Do not rely solely on checkmyvibe to declare your application hardened for production.
 
 ---
 
@@ -50,13 +50,11 @@ If you prefer not to use `npx`, copy the files manually:
 
 Once installed, your AI coding agent will automatically recognize the `checkmyvibe` skill when relevant. You can trigger the workflow explicitly:
 
-### Claude Code
-Open your terminal in the workspace and type:
-```bash
-/bug run a security audit
-```
-*Or simply ask Claude in the chat:*
-> "Run a security audit on this project using checkmyvibe"
+### Claude Code / Gemini CLI
+Open your terminal in the workspace and ask:
+> "Run checkmyvibe on this project"
+*Or:*
+> "Perform a production readiness check using checkmyvibe"
 
 The agent will walk through the checks, execute the local python validation scripts, and print a prioritized markdown report (Critical / Should Fix / Worth Reviewing) with instructions on how to correct the issues.
 

@@ -1,14 +1,13 @@
 ---
 name: checkmyvibe
 description: >
-  Use this skill when the user asks for a security review, security audit, penetration test, or "is this safe to ship / safe to launch" check. Also trigger proactively when the agent is about to help deploy, publish, or push an application live, or when the codebase shows signs of AI-scaffolded patterns (Supabase/Firebase config, recently generated boilerplate, auth stubs, no existing security review) and the user has not had one done yet. Covers the specific, documented vulnerability patterns common in AI-generated and vibe-coded applications: exposed secrets, missing or fake authentication, permissive database rules, broken object-level authorization, unvalidated inputs, and client-side payment or pricing logic.
+  Use this skill when the user asks to "check my vibe", run a production readiness check, review code quality, do a sanity check, check for exposed environment variables, or check if the app is ready to launch/ship. Also trigger proactively when the agent is about to help deploy, publish, or push an application live, or when the codebase shows signs of AI-scaffolded patterns (Supabase/Firebase config, recently generated boilerplate, auth stubs, no existing verification) and the user has not had one done yet. Covers checking for missing or placeholder authentication, exposed secrets, permissive database rules, object-level authorization, input validation, and pricing configuration in client bundles.
 ---
-
-# checkmyvibe — Security Audit for Vibe-Coded Apps
+# checkmyvibe — Production Readiness & Code Quality Check for Vibe-Coded Apps
 
 ## Why this skill exists
 
-AI coding tools optimize for "it works," not "it's safe." A feature can pass every
+AI coding tools optimize for "it works," not "it's production-ready." A feature can pass every
 manual test a non-technical founder runs — sign up, log in, place an order — and
 still leak every other user's data to a stranger who changes one number in a URL.
 This happens because AI-generated code frequently ships with scaffolding shortcuts
@@ -16,24 +15,24 @@ that were meant to be temporary (a stub auth check, a permissive default databas
 rule) and never get hardened before launch, precisely because the person building
 the app doesn't know those shortcuts exist or what to look for.
 
-Your job when this skill is active: think like a security engineer doing a
-pre-launch review for a client who has never heard the words "IDOR" or "row-level
-security." Find the real, exploitable issues. Explain them in plain language. Give
-exact fixes. Do not pad the report with theoretical concerns that don't apply to
-this specific codebase, and do not skip a check because the codebase "looks
-simple" — simple codebases are exactly where stubbed auth and hardcoded secrets
-hide, because nobody expected them to hold real user data yet.
+Your job when this skill is active: think like an experienced software engineer doing a
+pre-launch quality review for a client who has never heard the words "IDOR" or "row-level
+security." Find the real, addressable configuration and logic issues. Explain them in plain
+language. Give exact fixes. Do not pad the report with theoretical concerns that don't apply
+to this specific codebase, and do not skip a check because the codebase "looks simple" —
+simple codebases are exactly where stubbed auth and hardcoded secrets hide, because nobody
+expected them to hold real user data yet.
 
 ## Scope and honesty (read this before writing any report)
 
-This is a first-pass audit for known, documented failure patterns. It is not a
-full penetration test, it does not cover infrastructure security, dependency
-vulnerabilities, or novel/business-logic-specific flaws outside the six categories
-below. Never tell the user their app is "secure" or "safe" in an unqualified way.
+This is a first-pass review for known, documented scaffolding failure patterns. It is not a
+comprehensive external validation, and it does not cover infrastructure hosting, third-party package
+issues, or novel/business-logic-specific flaws outside the six categories
+below. Never tell the user their app is completely "secure" or "safe" in an unqualified way.
 The correct language is "no issues found in this pass" or "ready to ship as far as
 these checks go" — always paired with the scope reminder in the Final Summary
 section. If the app appears to handle payments, health data, or other regulated
-data, say explicitly that a professional audit is strongly recommended regardless
+data, say explicitly that a professional verification is strongly recommended regardless
 of what this pass finds.
 
 ## Before you start
@@ -50,7 +49,6 @@ of what this pass finds.
    everything else, read the actual code — don't rely on file names alone.
 
 ---
-
 
 ## Supported stacks to recognize
 
@@ -80,6 +78,7 @@ strings, and variable assignments where a name like `key`, `secret`, `token`, or
 `password` is set to a literal string instead of `process.env.X` or equivalent.
 
 **What counts as a finding:**
+
 - A real credential committed directly in source, e.g.:
   `const stripeKey = "sk_live_51H8x..."` — Critical
 - A secret present only in `.env` but `.env` is not gitignored (see Check 2) —
@@ -90,6 +89,7 @@ strings, and variable assignments where a name like `key`, `secret`, `token`, or
   Critical, this is directly shippable to every visitor's browser
 
 **What is NOT a finding (avoid false positives):**
+
 - Public/anon/publishable keys that are designed to be exposed client-side
   (Stripe publishable keys starting `pk_`, Supabase anon keys) — these are safe
   by design as long as server-side authorization (RLS, API checks) is correctly
@@ -105,10 +105,10 @@ them (not just whether a `.gitignore` file exists — many AI-generated `.gitign
 files exist but miss the actual secret file).
 
 **What counts as a finding:**
+
 - `.env` present in the working directory and not listed in `.gitignore` —
   Critical, regardless of current contents
-- `.env` already committed to git history (check with a quick `git log --all
-  --full-history -- .env` if git is available) — Critical, and note in the
+- `.env` already committed to git history (check with a quick `git log --all --full-history -- .env` if git is available) — Critical, and note in the
   fix that removing it from `.gitignore` going forward is not enough; the
   secrets in git history must be rotated, since they're recoverable even after
   deletion
@@ -119,17 +119,18 @@ files exist but miss the actual secret file).
 checks) for these patterns:
 
 **What counts as a finding:**
+
 - A function that always returns true/success regardless of input, e.g.:
   ```js
   function isAuthenticated(req) {
     return true; // TODO: implement real auth
   }
   ```
+
   Critical — this is a placeholder someone forgot to replace.
 - Naming that signals a stub: `mockAuth`, `fakeLogin`, `tempAuth`, `bypassAuth`,
   `skipAuth`, `devAuth` still present in a codebase with no clear dev-only guard
-  around it. If it IS properly guarded (e.g. `if (process.env.NODE_ENV ===
-  'development')`), verify the guard is airtight and note it as Should Fix
+  around it. If it IS properly guarded (e.g. `if (process.env.NODE_ENV === 'development')`), verify the guard is airtight and note it as Should Fix
   rather than Critical, since misconfigured environment variables in production
   are a common way these leak through anyway.
 - A protected route or API endpoint with no auth check at all — compare route
@@ -153,6 +154,7 @@ If the project uses **Supabase**: check for row-level security (RLS) policies on
 every table that holds user-specific data. A table with RLS disabled, or enabled
 with a policy like `USING (true)` for `SELECT`/`UPDATE`/`DELETE`, means any
 authenticated (or even anonymous) user can read or modify every row.
+
 ```sql
 -- Finding example: this policy applies to ALL rows for ALL users
 CREATE POLICY "allow all" ON orders FOR SELECT USING (true);
@@ -204,6 +206,7 @@ common and DELETE is often the most damaging.
 ## Check 6: Unvalidated inputs
 
 Spot-check forms and API endpoints for:
+
 - No type or length validation on inputs before they're stored or used
 - User input passed into a database query via string concatenation rather than
   parameterized queries/an ORM (SQL injection risk)
@@ -261,6 +264,7 @@ For every finding, use exactly this structure:
 - Include a `Generated fix:` line when a direct code snippet or precise implementation step would help the agent patch the issue immediately.
 
 **[SEVERITY] Short title**
+
 - **What's wrong:** plain-English description, no jargon. If a technical term is
   unavoidable (e.g. "IDOR"), define it in one clause the first time it's used.
 - **Why it matters:** a concrete, real-world consequence a non-technical person
@@ -271,10 +275,10 @@ For every finding, use exactly this structure:
   suggestion like "add proper validation."
 - **File(s):** exact path and line number(s).
 
-
 ## After the checks
 
-Once the checks are complete, create a security audit/report. **The report must be written in clear, plain English, completely free of dense security jargon, so that it is easily understandable by non-technical stakeholders (such as founders, clients, or project managers).** The report must include:
+Once the checks are complete, create a readiness review report. **The report must be written in clear, plain English, completely free of dense technical jargon, so that it is easily understandable by non-technical stakeholders (such as founders, clients, or project managers).** The report must include:
+
 - what was found
 - what is fixed already
 - how each fix was applied
@@ -283,12 +287,12 @@ Once the checks are complete, create a security audit/report. **The report must 
 
 If no issues are found, still produce a short report that says no blocking issues were found in this pass, which categories were checked, and what the remaining scope limits are.
 
-
 ## Example report style
 
 Use clear, direct wording like:
 
 **[Critical] Missing object-level authorization**
+
 - **What's wrong:** Any logged-in user can read another user's order by changing the order ID.
 - **Why it matters:** A stranger could see someone else's orders and personal details.
 - **The fix:** Add a user ownership check in the query and return 404 when the record does not belong to the current user.
@@ -296,22 +300,23 @@ Use clear, direct wording like:
 
 ## Final summary
 
-End every audit with, in this order:
+End every review with, in this order:
+
 1. Stack and data-sensitivity context noted at the start (one line)
 2. Total findings by severity, e.g. "2 Critical, 3 Should Fix, 1 Worth Reviewing"
 3. A one-line verdict: "Not ready to ship — fix the Critical items first" or "No
    blocking issues found in this pass — review the Should Fix items when you can"
-4. The scope reminder: "This covers common patterns seen in AI-generated code —
-   exposed secrets, auth stubs, database misconfiguration, IDOR, input validation,
-   and client-side payment logic. It is not a full penetration test. If this app
-   handles payment, health, or other regulated data, get a professional security
-   review before launch regardless of these results."
+4. The scope reminder: "This review covers common configuration patterns seen in AI-generated code —
+   exposed secrets, auth stubs, database rules, object-level authorization, input validation,
+   and client-side payment logic. It is not a comprehensive third-party safety audit or pentest. If this app
+   handles payment, health, or other regulated data, get a professional external review
+   before launch regardless of these results."
 
 ## Notes for the agent
 
-- Always produce an audit/report after the scan; do not stop at raw findings.
+- Always produce a review report after the check; do not stop at raw findings.
 - Write the entire report in clear, accessible language. Frame findings around concrete, real-world user consequences rather than abstract technical concepts. A non-technical stakeholder must be able to read the report and immediately understand the real-world danger.
-- The audit should clearly separate what was found, what was fixed, how it was fixed, and what remains.
+- The review should clearly separate what was found, what was fixed, how it was fixed, and what remains.
 - Always run the available scripts (located in the `scripts/` directory relative to this `SKILL.md` file) before relying on reasoning alone for Checks 1-4 — they exist so those specific checks are reliable and repeatable rather than dependent on re-deriving the logic every time.
 - If a script is missing, fails to run, or the language/stack isn't supported by
   it, say so explicitly in the report ("automated secret scan could not run;
