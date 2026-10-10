@@ -4,6 +4,9 @@ Production Readiness and Code Quality Audit for AI Coding Assistants
 
 Catch scaffolding shortcuts, exposed credentials, mock authentication, permissive database policies, and client-side pricing leaks before deployment.
 
+**Homepage:** [https://checkmyvibef.vercel.app/](https://checkmyvibef.vercel.app/)
+
+[![Homepage](https://img.shields.io/badge/homepage-checkmyvibef.vercel.app-blue?style=flat-square)](https://checkmyvibef.vercel.app/)
 [![npm version](https://img.shields.io/npm/v/checkmyvibe?color=24292e&style=flat-square)](https://www.npmjs.com/package/checkmyvibe)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square)](LICENSE)
 [![Dependencies](https://img.shields.io/badge/dependencies-0-success?style=flat-square)](package.json)
@@ -18,12 +21,13 @@ Catch scaffolding shortcuts, exposed credentials, mock authentication, permissiv
 - [Overview](#overview)
 - [Architecture & Workflow](#architecture--workflow)
 - [Readiness Checks](#readiness-checks)
-- [Scoped Audits](#scoped-audits)
+- [Targeted / Scoped Scanning](#targeted--scoped-scanning)
 - [Sample Audit Report](#sample-audit-report)
 - [Platform Support](#platform-support)
 - [Manual Installation](#manual-installation)
 - [Local Execution and Privacy](#local-execution-and-privacy)
 - [Scope and Disclaimer](#scope-and-disclaimer)
+- [Project Links](#project-links)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -135,19 +139,19 @@ The inspection suite covers seven core categories:
 
 ---
 
-## Scoped Audits
+## Targeted / Scoped Scanning
 
 To audit specific subsystems during iterative development without running the complete test suite, use targeted scopes:
 
-| Slash Command | Scope Keyword | Checks Executed | Primary Use Case |
+| Command | Scope | Checks Executed | Primary Use Case |
 | :--- | :--- | :--- | :--- |
-| `/checkmyvibe-secrets` | `/checkmyvibe secrets` | **Checks 1a, 1b, 2** | Pre-commit check: API keys, env vars, `.gitignore`, and container configs |
-| `/checkmyvibe-auth` | `/checkmyvibe auth` | **Check 3** | Auditing authentication flows, session handling, and middleware guards |
-| `/checkmyvibe-db` | `/checkmyvibe db` | **Check 4** | Auditing Supabase RLS, Firebase rules, and database connection pooling |
-| `/checkmyvibe-backend` | `/checkmyvibe backend` | **Checks 1a, 3, 4, 5, 6 (srv), 7 (srv)** | Comprehensive audit of server routes, Server Actions, IDOR, and webhooks |
-| `/checkmyvibe-frontend` | `/checkmyvibe frontend` | **Checks 1b, 3 (cli), 6 (XSS), 7 (cli)** | Inspecting client bundles, RSC prop serialization, and UI pricing assumptions |
-| `/checkmyvibe-payment` | `/checkmyvibe payment` | **Check 7** | Auditing checkout routes, payment webhooks, and subscription lifecycle |
-| `/checkmyvibe` | *(no argument)* | **All Checks (1a - 7)** | Full production readiness audit across the entire repository |
+| `/checkmyvibe secrets` | `secrets` | **Checks 1a, 1b, 2** | Pre-commit check: API keys, env vars, `.gitignore`, and container configs |
+| `/checkmyvibe auth` | `auth` | **Check 3** | Auditing authentication flows, session handling, and middleware guards |
+| `/checkmyvibe db` | `db` | **Check 4** | Auditing Supabase RLS, Firebase rules, and database connection pooling |
+| `/checkmyvibe backend` | `backend` | **Checks 1a, 3, 4, 5, 6 (srv), 7 (srv)** | Comprehensive audit of server routes, Server Actions, IDOR, and webhooks |
+| `/checkmyvibe frontend` | `frontend` | **Checks 1b, 3 (cli), 6 (XSS), 7 (cli)** | Inspecting client bundles, RSC prop serialization, and UI pricing assumptions |
+| `/checkmyvibe payment` | `payment` | **Check 7** | Auditing checkout routes, payment webhooks, and subscription lifecycle |
+| `/checkmyvibe` | *(default / full)* | **All Checks (1a - 7)** | Full production readiness audit across the entire repository |
 
 You can also restrict any scan to a specific directory path:
 
@@ -294,6 +298,14 @@ checkmyvibe/
 > **`checkmyvibe` is not an alternative to an external security audit, penetration test, or formal compliance assessment (SOC2, HIPAA, PCI-DSS).**
 >
 > It functions as an automated first-pass readiness filter designed to identify common scaffolding shortcuts, placeholder logic, and configuration vulnerabilities introduced by AI coding tools during rapid development. Applications processing sensitive consumer data, protected health information, or high-volume financial transactions should undergo formal human security reviews prior to release.
+
+---
+
+## Project Links
+
+- **Homepage:** [https://checkmyvibef.vercel.app/](https://checkmyvibef.vercel.app/)
+- **npm Package:** [https://www.npmjs.com/package/checkmyvibe](https://www.npmjs.com/package/checkmyvibe)
+- **GitHub Repository:** [https://github.com/Sarthakpatil23/checkmyvibe](https://github.com/Sarthakpatil23/checkmyvibe)
 
 ---
 
